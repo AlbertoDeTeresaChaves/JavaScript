@@ -75,7 +75,6 @@
         function cambio_soluciones(){
    
             nfc=parseInt(document.getElementById("idSelect").value)
-            console.log(nfc)
             filas=(nfc*2)+2;
             let q=0;
             posibilidades=new Array(filas);
@@ -93,7 +92,8 @@
     
             for(let i=0;i<nfc;i++){
                 posibilidades[q][i]=(i*nfc)+(i+1);
-                posibilidades[q+1][i]=(i*nfc)+(nfc-1);
+                posibilidades[q+1][i]= (i*nfc) + (nfc-i);
+
             }
             document.getElementById("soluciones").innerHTML=dime();
         }
@@ -114,15 +114,16 @@
         function cambio_juego() {
             let destino = document.getElementById("juego");
             destino.innerHTML = "";
-            contador = 1;
+            var contador = 1;
             let tabla = document.createElement("table");
-            for (let i = 1; i <= nfc; i++) {
+            for (let i=1;i<=nfc;i++) {
                 let fila = document.createElement("tr");
-                for (let u = 0; u < nfc; u++) {
+                for (let u=0;u<nfc;u++) {
                     let celda = document.createElement("td");
                     let elem = document.createElement("div");
                     elem.setAttribute("id", "div_" + contador);
                     elem.setAttribute("class", "casillas");
+                    elem.addEventListener("dblclick",()=>{ganador(elem);});
                     elem.innerHTML = "";
                     celda.appendChild(elem);
                     contador++;
@@ -131,9 +132,37 @@
                 tabla.appendChild(fila);
             }
             destino.appendChild(tabla);
-            console.log(destino);
         }
-        
+        turno = true;
+        function ganador(casilla){
+            if(turno){
+                casilla.style.backgroundColor="red";
+                turno = false;
+                comprobar();
+            }else{
+                casilla.style.backgroundColor="blue";
+                turno = true;
+                comprobar();
+            }
+            
+        }
+
+        function comprobar(){
+            for(let fila of posibilidades){
+                let color = document.getElementById("div_"+fila[0]).style.backgroundColor
+                let acertar=true;
+                for(let celda of fila){
+                    let elem = document.getElementById("div_"+celda);
+                    if(elem.style.backgroundColor!=color){
+                        acertar=false;
+                        break;
+                    }   
+                }
+                if(acertar && color){
+                    console.log("GANADOR "+color)
+                }
+            }
+        }
 
         window.addEventListener('load',()=>{cargar()});
     </script>
