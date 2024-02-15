@@ -18,24 +18,34 @@
         #container{
             display:inline-flex;
             margin-top: -15%;
-            place-items: center;
-            border: blueviolet;
-            border-style: solid;                      
+            place-items: center;                  
         }
-        #contenido{
+        .contenido{
             background-color: rgb(221, 209, 209);
             width: 450px;
             height: 450px;
             border-radius: 35px;
             padding: 25px;
-            text-align: center;
             box-shadow: 0px 0px 23px 0px rgba(0,0,0,0.75);
             margin: 15px;
-            
+        }
+        #juego{
+            display: flex;
+            align-items: center;
+            justify-content: center;
         }
         #idSelect{
             width: 50px;
             text-align: center;
+        }
+        .casillas{
+            background-color: rgb(209, 193, 193);
+            width: 45px;
+            height: 45px;
+            text-align: center;
+            margin: 5px;
+            border-radius: 25px;
+            box-shadow: inset 0px 0px 31px 1px rgba(22, 22, 22, 0.75);
         }
     </style>
     <script>
@@ -46,12 +56,11 @@
     
         function cargar(){
             fContenido();
-            cambio();
+            cambio_soluciones();
+            cambio_juego();
         }
     
         function fContenido(){
-            
-            let destino = document.getElementById("general-container");
             let elem = document.getElementById("idSelect");     
             for(let i = 3;i<=8;i++){
                 let elem2 = document.createElement("option");
@@ -59,10 +68,11 @@
                 elem2.value=i;
                 elem.appendChild(elem2);
             }
-            elem.addEventListener("change",()=>{cambio();});
+            elem.addEventListener("change",()=>{cambio_soluciones();});
+            elem.addEventListener("change",()=>{cambio_juego();});
         }
     
-        function cambio(){
+        function cambio_soluciones(){
    
             nfc=parseInt(document.getElementById("idSelect").value)
             console.log(nfc)
@@ -85,7 +95,7 @@
                 posibilidades[q][i]=(i*nfc)+(i+1);
                 posibilidades[q+1][i]=(i*nfc)+(nfc-1);
             }
-            document.getElementById("contenido").innerHTML=dime();
+            document.getElementById("soluciones").innerHTML=dime();
         }
     
         function dime(){
@@ -100,6 +110,31 @@
                 cadena +="</table>";
             return cadena;
         }
+        
+        function cambio_juego() {
+            let destino = document.getElementById("juego");
+            destino.innerHTML = "";
+            contador = 1;
+            let tabla = document.createElement("table");
+            for (let i = 1; i <= nfc; i++) {
+                let fila = document.createElement("tr");
+                for (let u = 0; u < nfc; u++) {
+                    let celda = document.createElement("td");
+                    let elem = document.createElement("div");
+                    elem.setAttribute("id", "div_" + contador);
+                    elem.setAttribute("class", "casillas");
+                    elem.innerHTML = "";
+                    celda.appendChild(elem);
+                    contador++;
+                    fila.appendChild(celda);
+                }
+                tabla.appendChild(fila);
+            }
+            destino.appendChild(tabla);
+            console.log(destino);
+        }
+        
+
         window.addEventListener('load',()=>{cargar()});
     </script>
     
@@ -108,14 +143,9 @@
     
     <div class="general-container">
         <select id="idSelect"></select>
-    
         <div id="container">
-            <div id="contenido">
-
-            </div>
-            <div id="contenido">
-
-            </div>
+            <div class="contenido" id="soluciones"></div>
+            <div class="contenido" id="juego"></div>
         </div>
     </div>
 </body>
