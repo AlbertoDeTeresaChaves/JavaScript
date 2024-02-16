@@ -53,7 +53,7 @@
         var posibilidades="";
         var nfc;
         var filas;
-    
+        juegoFin=true;
         function cargar(){
             fContenido();
             cambio_soluciones();
@@ -135,6 +135,7 @@
         }
         turno = true;
         function ganador(casilla){
+            if(!juegoFin || casilla.style.backgroundColor!="")return;
             if(turno){
                 casilla.style.backgroundColor="red";
                 turno = false;
@@ -160,6 +161,8 @@
                 }
                 if(acertar && color){
                     console.log("GANADOR "+color)
+                    juegoFin=false;
+                
                 }
             }
         }
