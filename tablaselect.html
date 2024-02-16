@@ -16,9 +16,10 @@
             display:grid;
         }
         #container{
-            display:inline-flex;
+            display:flex;
             margin-top: -15%;
-            place-items: center;                  
+            place-items: center;     
+            margin-bottom: -15%;             
         }
         .contenido{
             background-color: rgb(221, 209, 209);
@@ -46,6 +47,21 @@
             margin: 5px;
             border-radius: 25px;
             box-shadow: inset 0px 0px 31px 1px rgba(22, 22, 22, 0.75);
+        }
+        p{
+         font-size: 35px;   
+        }
+        #idSelect{
+            font-size: 15px;
+            width: 70px;
+            height: 30px;
+            border-radius: 25px;
+        }
+        #idSelect:hover{
+            cursor: pointer;
+        }
+        .ctd{
+            background-color: white;
         }
     </style>
     <script>
@@ -138,6 +154,7 @@
             if(!juegoFin || casilla.style.backgroundColor!="")return;
             if(turno){
                 casilla.style.backgroundColor="red";
+                casilla.onmouseover.style.backgroundColor="blue";
                 turno = false;
                 comprobar();
             }else{
@@ -160,13 +177,13 @@
                     }   
                 }
                 if(acertar && color){
+                    document.getElementById("winner").innerHTML="HA GANADO JUGADOR "+color.toUpperCase()
                     console.log("GANADOR "+color)
                     juegoFin=false;
                 
                 }
             }
         }
-
         window.addEventListener('load',()=>{cargar()});
     </script>
     
@@ -178,7 +195,9 @@
         <div id="container">
             <div class="contenido" id="soluciones"></div>
             <div class="contenido" id="juego"></div>
+            
         </div>
+        <p id="winner"></p>
     </div>
 </body>
 </html>
